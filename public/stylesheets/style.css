@@ -10,7 +10,7 @@ body {
 .container {
   background-color: white;
   width: 480px;
-  min-height: 650px;
+  /* min-height: 650px; */
   position: absolute;
   margin: auto;
   top: 50%;
@@ -18,9 +18,10 @@ body {
   transform: translate(-50%, -50%);
   border-radius: 10px;
   box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.5);
+  padding-bottom: 30px;
 }
 .content {
-  width: 60%;
+  width: 65%;
   margin: auto;
   text-align: center;
 }
