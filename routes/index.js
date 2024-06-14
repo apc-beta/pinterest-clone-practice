@@ -4,6 +4,7 @@ const userModel = require("./users");
 const postModel = require("./posts");
 const localStrategy = require("passport-local");
 const passport = require('passport');
+const upload = require('./multer');
 passport.use(new localStrategy(userModel.authenticate()));
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -18,8 +19,28 @@ router.get("/feed", function(req, res){
   res.render('feed');
 });
 
-router.get("/profile", isLoggedIn, function(req, res){
-  res.render("profile");
+router.post("/upload", isLoggedIn, upload.single("file"), async function(req, res){
+  if(!req.file)
+   return res.status(404).send("No fucks given.");
+
+  const user  = await userModel.findOne({username : req.session.passport.user});
+  const postdata = await postModel.create({
+    image: req.file.filename,
+    imageText: req.body.filecaption,
+    user: user._id
+  });
+
+  user.posts.push(postdata._id);
+  await user.save();
+
+  res.redirect("/profile");
+});
+
+router.get("/profile", isLoggedIn, async function(req, res){
+  const user = await userModel.findOne({
+    username: req.session.passport.user
+  }).populate("posts")
+  res.render("profile", {user});
 });
 
 
@@ -28,7 +49,7 @@ router.post("/register", async function(req, res){
   const userdata = new userModel({
     username: req.body.username,
     email: req.body.email,
-    fullname: req.body.fullName
+    fullname: req.body.fullname
   })
 
   userModel.register(userdata, req.body.password)

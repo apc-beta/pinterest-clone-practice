@@ -5,13 +5,14 @@ body {
   font-family: 'Nunito', sans-serif;
   letter-spacing: .1px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #dadada;
 }
 
 #card {
-  width: 650px;
+  width: 30%;
   height: 200px;
   margin: 0 auto;
   padding: 15px;
@@ -105,4 +106,10 @@ body {
 
 #btn:hover {
   background: #2A26FF;
+}
+
+.cards{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
